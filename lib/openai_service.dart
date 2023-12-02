@@ -4,7 +4,7 @@ import 'package:chatgpt_bot/secrets.dart';
 import 'package:http/http.dart' as http;
 
 class OpenAIService {
-    final List<Map<String, String>> messages = [];
+  final List<Map<String, String>> messages = [];
   // Future<String> isArtPromptAPI(String prompt) async {
   //   try {
   //     final res = await http.post(
@@ -52,7 +52,7 @@ class OpenAIService {
   // }
 
   Future<String> chatGPTAPI(String prompt) async {
-     messages.add({
+    messages.add({
       'role': 'user',
       'content': prompt,
     });
@@ -79,8 +79,11 @@ class OpenAIService {
           'content': content,
         });
         return content;
+      } else {
+        print('Status Code..................: ${res.statusCode}');
+        print('Response Body............: ${res.body}');
+        return 'An internal error occurred';
       }
-      return 'An internal error occurred';
     } catch (e) {
       return e.toString();
     }

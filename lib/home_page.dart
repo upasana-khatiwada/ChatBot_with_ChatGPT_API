@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:chatgpt_bot/feature_box.dart';
 import 'package:chatgpt_bot/openai_service.dart';
 import 'package:chatgpt_bot/pallete.dart';
@@ -14,12 +15,17 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final TextEditingController _textEditingController =
+      TextEditingController(); //for TextField
+
   final speechToText = SpeechToText();
   final flutterTts = FlutterTts();
   String lastWords = '';
   final OpenAIService openAIService = OpenAIService();
   String? generatedContent;
   String? generatedImageUrl;
+  int start = 200;
+  int delay = 200;
 
   @override
   void initState() {
@@ -40,7 +46,7 @@ class _HomePageState extends State<HomePage> {
 
   //Each time to start a speech recognition session
   Future<void> startListening() async {
-    await speechToText.listen(onResult: onSpeechResult);
+    await speechToText.listen(onResult: _onSpeechResult);
     setState(() {});
   }
 
@@ -55,7 +61,7 @@ class _HomePageState extends State<HomePage> {
 
   /// This is the callback that the SpeechToText plugin calls when
   /// the platform returns recognized words.
-  void onSpeechResult(SpeechRecognitionResult result) {
+  void _onSpeechResult(SpeechRecognitionResult result) {
     setState(() {
       lastWords = result.recognizedWords;
     });
@@ -76,7 +82,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My assistant'),
+        title: BounceInDown(child: const Text('My assistant')),
         leading: const Icon(Icons.menu),
         centerTitle: true,
       ),
@@ -84,59 +90,63 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           children: [
             //virtual assistant picture
-            Stack(
-              children: [
-                Center(
-                  child: Container(
-                    height: 120,
-                    width: 120,
-                    margin: const EdgeInsets.only(top: 4),
-                    decoration: const BoxDecoration(
-                      color: Pallete.assistantCircleColor,
-                      shape: BoxShape.circle,
+            ZoomIn(
+              child: Stack(
+                children: [
+                  Center(
+                    child: Container(
+                      height: 120,
+                      width: 120,
+                      margin: const EdgeInsets.only(top: 4),
+                      decoration: const BoxDecoration(
+                        color: Pallete.assistantCircleColor,
+                        shape: BoxShape.circle,
+                      ),
                     ),
                   ),
-                ),
-                Container(
-                  height: 123,
-                  decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                          image: AssetImage(
-                              "assets/images/virtualAssistant.png"))),
-                )
-              ],
+                  Container(
+                    height: 123,
+                    decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                            image: AssetImage(
+                                "assets/images/virtualAssistant.png"))),
+                  )
+                ],
+              ),
             ),
             //chat bubble
-            Visibility(
-              visible: generatedImageUrl == null,
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 10,
-                ),
-                margin: const EdgeInsets.symmetric(horizontal: 40).copyWith(
-                  top: 30,
-                ),
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Pallete.borderColor,
+            FadeInRight(
+              child: Visibility(
+                visible: generatedImageUrl == null,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 10,
                   ),
-                  //to make the border pointy on the left side while making circular in other side
-                  borderRadius: BorderRadius.circular(20).copyWith(
-                    topLeft: Radius.zero,
+                  margin: const EdgeInsets.symmetric(horizontal: 40).copyWith(
+                    top: 30,
                   ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10.0),
-                  child: Text(
-                    generatedContent == null
-                        ? 'Good Morning, what task can I do for you?'
-                        : generatedContent!,
-                    style: TextStyle(
-                      fontFamily: 'Cera Pro',
-                      color: Pallete.mainFontColor,
-                      fontSize: generatedContent == null ? 25 : 18,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Pallete.borderColor,
+                    ),
+                    //to make the border pointy on the left side while making circular in other side
+                    borderRadius: BorderRadius.circular(20).copyWith(
+                      topLeft: Radius.zero,
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10.0),
+                    child: Text(
+                      generatedContent == null
+                          ? 'Good Morning, what task can I do for you?'
+                          : generatedContent!,
+                      style: TextStyle(
+                        fontFamily: 'Cera Pro',
+                        color: Pallete.mainFontColor,
+                        fontSize: generatedContent == null ? 25 : 18,
+                      ),
                     ),
                   ),
                 ),
@@ -150,19 +160,21 @@ class _HomePageState extends State<HomePage> {
                   child: Image.network(generatedImageUrl!),
                 ),
               ),
-            Visibility(
-              visible: generatedContent == null && generatedImageUrl == null,
-              child: Container(
-                padding: const EdgeInsets.all(10),
-                alignment: Alignment.centerLeft,
-                margin: const EdgeInsets.only(top: 10, left: 22),
-                child: const Text(
-                  'Here are a few features ',
-                  style: TextStyle(
-                    fontFamily: 'Cera Pro',
-                    color: Pallete.mainFontColor,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+            SlideInLeft(
+              child: Visibility(
+                visible: generatedContent == null && generatedImageUrl == null,
+                child: Container(
+                  padding: const EdgeInsets.all(10),
+                  alignment: Alignment.centerLeft,
+                  margin: const EdgeInsets.only(top: 10, left: 22),
+                  child: const Text(
+                    'Here are a few features ',
+                    style: TextStyle(
+                      fontFamily: 'Cera Pro',
+                      color: Pallete.mainFontColor,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),
@@ -170,25 +182,91 @@ class _HomePageState extends State<HomePage> {
             //features list
             Visibility(
               visible: generatedContent == null && generatedImageUrl == null,
-              child: const Column(
+              child: Column(
                 children: [
-                  FeatureBox(
-                    color: Pallete.firstSuggestionBoxColor,
-                    headerText: 'ChatGPT',
-                    descriptionText:
-                        'A smarter way to stay organized and informed with ChatGPT',
+                  SlideInLeft(
+                    delay: Duration(milliseconds: start),
+                    child: const FeatureBox(
+                      color: Pallete.firstSuggestionBoxColor,
+                      headerText: 'ChatGPT',
+                      descriptionText:
+                          'A smarter way to stay organized and informed with ChatGPT',
+                    ),
                   ),
-                  FeatureBox(
-                    color: Pallete.secondSuggestionBoxColor,
-                    headerText: 'Dall-E',
-                    descriptionText:
-                        'Get inspired and stay creative with your personal assistant powered by Dall-E',
+                  SlideInLeft(
+                    delay: Duration(milliseconds: start + delay),
+                    child: const FeatureBox(
+                      color: Pallete.secondSuggestionBoxColor,
+                      headerText: 'Dall-E',
+                      descriptionText:
+                          'Get inspired and stay creative with your personal assistant powered by Dall-E',
+                    ),
                   ),
-                  FeatureBox(
-                    color: Pallete.thirdSuggestionBoxColor,
-                    headerText: 'Smart Voice Assistant',
-                    descriptionText:
-                        'Get the best of both worlds with a voice assistant powered by Dall-E and ChatGPT',
+                  SlideInLeft(
+                    delay: Duration(milliseconds: start + 2 * delay),
+                    child: const FeatureBox(
+                      color: Pallete.thirdSuggestionBoxColor,
+                      headerText: 'Smart Voice Assistant',
+                      descriptionText:
+                          'Get the best of both worlds with a voice assistant powered by Dall-E and ChatGPT',
+                    ),
+                  ),
+                  //Text Field
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                    margin: const EdgeInsets.all(5.0),
+                    decoration: BoxDecoration(
+                      color: Pallete.firstSuggestionBoxColor,
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium!
+                                .copyWith(color: Colors.white),
+                            controller: _textEditingController,
+                            decoration: const InputDecoration(
+                                hintText: "Message", border: InputBorder.none),
+                          ),
+                        ),
+                        IconButton(
+                            onPressed: () async {
+                              if (await speechToText.hasPermission &&
+                                  speechToText.isNotListening) {
+                                await startListening();
+                              } else if (speechToText.isListening) {
+                                final speech =
+                                    await openAIService.chatGPTAPI(lastWords);
+                                generatedContent = speech;
+                                setState(() {});
+                                await systemSpeak(speech);
+                                await stopListening();
+                              } else {
+                                initSpeechToText();
+                              }
+                            },
+                            icon: const Icon(Icons.mic)),
+                        IconButton(
+                            onPressed: () async {
+                              if (_textEditingController.text.isNotEmpty) {
+                               
+                                final speech = await openAIService
+                                    .chatGPTAPI(_textEditingController.text);
+                                await systemSpeak(speech);
+                                generatedContent = speech;
+                                setState(() {});
+
+                                _textEditingController.clear();
+                                // FocusScope.of(context)
+                                //     .unfocus(); //dismiss keyboard on submission //clear text field
+                              }
+                            },
+                            icon: const Icon(Icons.send)),
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -196,25 +274,30 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: ()async {
-            if(await speechToText.hasPermission && speechToText.isNotListening){
-             await  startListening();
-            }else if(speechToText.isListening){
-             final speech= await openAIService.chatGPTAPI(lastWords);
-             await systemSpeak(speech);
-             generatedContent=speech;
-             setState(() {
-               
-             });
-              await stopListening();
-            }else{
-              initSpeechToText();
-            }
-          },
-        backgroundColor: Pallete.firstSuggestionBoxColor,
-        child: const Icon( speechToText.isListening ? Icons.stop : Icons.mic,),
-      ),
+      // floatingActionButton: ZoomIn(
+      //   delay: Duration(milliseconds: start + 3 * delay),
+      //   child: FloatingActionButton(
+      //     onPressed: () async {
+      //       if (await speechToText.hasPermission &&
+      //           speechToText.isNotListening) {
+      //         await startListening();
+      //       } else if (speechToText.isListening) {
+      //         final speech = await openAIService.chatGPTAPI(lastWords);
+      //         generatedContent = speech;
+      //         setState(() {});
+      //         await systemSpeak(speech);
+      //         await stopListening();
+      //       } else {
+      //         initSpeechToText();
+      //       }
+      //     },
+      //     backgroundColor: Pallete.firstSuggestionBoxColor,
+      //     child: Icon(
+      //       speechToText.isListening ? Icons.stop : Icons.mic,
+      //     ),
+      //   ),
+
+      // ),
     );
   }
 }
