@@ -1,4 +1,4 @@
-import 'package:chatgpt_bot/home_page.dart';
+import 'package:chatgpt_bot/onboarding_screen.dart';
 import 'package:chatgpt_bot/pallete.dart';
 import 'package:flutter/material.dart';
 
@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
           backgroundColor: Pallete.whiteColor,
         ),
       ),
-      home: const HomePage(),
+      home: const OnBoardingScreen(),
     );
   }
 }
