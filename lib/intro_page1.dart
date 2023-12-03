@@ -6,7 +6,7 @@ class IntroPage1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 116, 211, 239),
+      backgroundColor: const Color.fromARGB(255, 199, 235, 246),
       body: Stack(
         children: [
           Column(
@@ -16,7 +16,7 @@ class IntroPage1 extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 40, left: 20, right: 10),
-                child: Image.asset("assets/images/robo.jpg"),
+                child: Image.asset("assets/images/robo.png"),
               ),
               const Padding(
                 padding: EdgeInsets.all(28.0),
