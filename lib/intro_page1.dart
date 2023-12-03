@@ -21,7 +21,7 @@ class IntroPage1 extends StatelessWidget {
               const Padding(
                 padding: EdgeInsets.all(28.0),
                 child: Text(
-                  "Hello, I am ChatGPT,a large language modeltrained by OpenAI. I can answer questions, generate text, and assist with various tasks . I am a work in progress , so please be patient with me",
+                  "Hello, I am ChatGPT , a large language model trained by OpenAI. I can answer questions, generate text, and assist with various tasks . I am a work in progress , so please be patient with me",
                   style: TextStyle(
                       color: Colors.black,
                       fontSize: 16,

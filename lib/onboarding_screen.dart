@@ -46,7 +46,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
               IntroPage1(),
               IntroPage2(),
               IntroPage3(),
-              HomePage(),
+             
             ],
           ),
 
