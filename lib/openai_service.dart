@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:chatgpt_bot/secrets.dart';
+import 'package:chatgpt_bot/key.dart';
 import 'package:http/http.dart' as http;
 
 class OpenAIService {

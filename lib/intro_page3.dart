@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 
 class IntroPage3 extends StatelessWidget {
@@ -16,7 +17,7 @@ class IntroPage3 extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 40, left: 20, right: 10),
-                  child: Image.asset("assets/images/robo3.png"),
+                  child: BounceInDown(child: Image.asset("assets/images/robo3.png")),
                 ),
                 const Padding(
                   padding: EdgeInsets.all(28.0),

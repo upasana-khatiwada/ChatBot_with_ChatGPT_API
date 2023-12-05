@@ -26,6 +26,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
           //Creates a scrollable list that works page by page from an explicit [List] of widgets.
 
           PageView(
+             physics: onLastPage ? const NeverScrollableScrollPhysics() : null,
             controller: _controller,
             onPageChanged: (index) {
               setState(() {
